@@ -3,11 +3,18 @@ import Head from 'next/head'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input'
 import { Button } from '@chakra-ui/button'
-import { memo } from 'react'
 import { useAuth } from '../hooks/auth/useAuth'
 
 export const Auth = () => {
-  const { isLogin, toggleIsLogin, authUser } = useAuth()
+  const {
+    isLogin,
+    username,
+    password,
+    handlePassword,
+    handleUsername,
+    toggleIsLogin,
+    authUser,
+  } = useAuth()
 
   return (
     <Flex
@@ -32,11 +39,13 @@ export const Auth = () => {
           w={{ md: 'sm', base: 'xs' }}
           minW="xs"
         >
-          <form>
+          <form onSubmit={authUser}>
             <Stack spacing="4">
               <FormControl>
                 <FormLabel>Username</FormLabel>
                 <Input
+                  value={username}
+                  onChange={handleUsername}
                   type="text"
                   borderColor="gray.500"
                   focusBorderColor="gray.400"
@@ -47,6 +56,8 @@ export const Auth = () => {
               <FormControl>
                 <FormLabel>Password</FormLabel>
                 <Input
+                  value={password}
+                  onChange={handlePassword}
                   type="password"
                   borderColor="gray.500"
                   focusBorderColor="gray.400"
