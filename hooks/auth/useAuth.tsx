@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { ChangeEvent, FormEvent, useCallback, useState } from 'react'
 import Cookie from 'universal-cookie'
-import { Token, User } from '../../types/auth/authTypes'
+import { Token } from '../../types/auth/authTypes'
 
 const cookie = new Cookie()
 
@@ -75,6 +75,9 @@ export const useAuth = () => {
     },
     [isLogin, username, password]
   )
+  const logout = () => {
+    cookie.remove('access_token')
+  }
 
   return {
     isLogin,
@@ -85,5 +88,6 @@ export const useAuth = () => {
     toggleIsLogin,
     isLoading,
     authUser,
+    logout,
   }
 }

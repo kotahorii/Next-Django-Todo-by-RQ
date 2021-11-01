@@ -24,7 +24,7 @@ export const Auth = () => {
       minH="100vh"
       color="white"
       bg="gray.800"
-      fontSize="sm"
+      fontSize="md"
       fontFamily="mono"
     >
       <Head>
