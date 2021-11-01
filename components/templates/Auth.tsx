@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input'
 import { Button } from '@chakra-ui/button'
-import { useAuth } from '../hooks/auth/useAuth'
+import { useAuth } from '../../hooks/auth/useAuth'
 
 export const Auth = () => {
   const {

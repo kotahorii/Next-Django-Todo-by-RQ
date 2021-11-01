@@ -73,7 +73,7 @@ export const useAuth = () => {
         }
       }
     },
-    [isLogin, username, password]
+    [isLogin, username, password] //eslint-disable-line
   )
   const logout = () => {
     cookie.remove('access_token')
