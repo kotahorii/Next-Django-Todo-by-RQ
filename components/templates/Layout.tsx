@@ -3,8 +3,8 @@ import { ReactNode, useEffect, VFC } from 'react'
 import Head from 'next/head'
 import Cookie from 'universal-cookie'
 import { useRouter } from 'next/router'
-import { useAuth } from '../../hooks/auth/useAuth'
 import { Header } from '../organisms/Header'
+import { Footer } from '../organisms/Footer'
 
 type Props = {
   title: string
@@ -14,7 +14,6 @@ type Props = {
 const cookie = new Cookie()
 
 export const Layout: VFC<Props> = ({ title, children }) => {
-  const { logout } = useAuth()
   const router = useRouter()
   // useEffect(() => {
   //   if (!cookie.get('access_token')) {
@@ -45,16 +44,7 @@ export const Layout: VFC<Props> = ({ title, children }) => {
       >
         {children}
       </Flex>
-      <Flex
-        w="full"
-        h="12"
-        justify="center"
-        align="center"
-        borderTop="1px"
-        borderColor="gray.600"
-      >
-        RQ + Chakra + Recoil
-      </Flex>
+      <Footer />
     </Flex>
   )
 }

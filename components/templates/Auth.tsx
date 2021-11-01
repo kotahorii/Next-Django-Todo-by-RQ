@@ -65,7 +65,6 @@ export const Auth = () => {
                   placeholder="Password"
                 />
               </FormControl>
-
               <Flex justify="start">
                 <Text
                   onClick={toggleIsLogin}

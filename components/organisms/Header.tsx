@@ -1,8 +1,12 @@
 import { Button } from '@chakra-ui/button'
 import { Stack } from '@chakra-ui/layout'
 import React, { VFC } from 'react'
+import { useAuth } from '../../hooks/auth/useAuth'
+import Link from 'next/link'
 
 export const Header: VFC = () => {
+  const { logout } = useAuth()
+
   return (
     <Stack
       px="3"
@@ -16,6 +20,7 @@ export const Header: VFC = () => {
       align="center"
     >
       <Button
+        onClick={logout}
         bg="transparent"
         fontWeight="bold"
         _hover={{ bg: 'gray.600' }}
@@ -24,20 +29,25 @@ export const Header: VFC = () => {
         Logout
       </Button>
       <Stack direction="row">
-        <Button
-          bg="transparent"
-          _hover={{ bg: 'gray.600' }}
-          _focus={{ boxShadow: 'none' }}
-        >
-          Tasks
-        </Button>
-        <Button
-          bg="transparent"
-          _hover={{ bg: 'gray.600' }}
-          _focus={{ boxShadow: 'none' }}
-        >
-          Tags
-        </Button>
+        <Link href="/tasks" passHref>
+          <Button
+            bg="transparent"
+            _hover={{ bg: 'gray.600' }}
+            _focus={{ boxShadow: 'none' }}
+          >
+            Tasks
+          </Button>
+        </Link>
+
+        <Link href="/tags" passHref>
+          <Button
+            bg="transparent"
+            _hover={{ bg: 'gray.600' }}
+            _focus={{ boxShadow: 'none' }}
+          >
+            Tags
+          </Button>
+        </Link>
       </Stack>
     </Stack>
   )
