@@ -3,7 +3,7 @@ import { GetStaticProps } from 'next'
 import React, { VFC } from 'react'
 import { Task } from '../components/molecules/Task'
 import { Layout } from '../components/templates/Layout'
-import { useQueryTask } from '../hooks/task/useQueryTask'
+import { useQueryTasks } from '../hooks/task/useQueryTasks'
 import { getTasks } from '../lib/task'
 import { ReadTask } from '../types/tasks/taskTypes'
 
@@ -12,7 +12,7 @@ type Props = {
 }
 
 const Tasks: VFC<Props> = ({ tasks }) => {
-  const { data } = useQueryTask(tasks)
+  const { data } = useQueryTasks(tasks)
   return (
     <Layout title="Task">
       <OrderedList>

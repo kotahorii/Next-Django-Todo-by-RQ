@@ -1,27 +1,29 @@
 import { Heading, Stack } from '@chakra-ui/layout'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { useRouter } from 'next/router'
 import React, { VFC } from 'react'
 import { Layout } from '../../components/templates/Layout'
-import { getTag, getTagIds } from '../../lib/tag'
-import { ReadTag } from '../../types/tasks/tagTypes'
+import { getTask, getTaskIds } from '../../lib/task'
+import { ReadTask } from '../../types/tasks/taskTypes'
 import Link from 'next/link'
 import { Button } from '@chakra-ui/button'
-import { useRouter } from 'next/router'
+import { useQueryTask } from '../../hooks/task/useQueryTask'
 
 type Props = {
-  tag: ReadTag
+  task: ReadTask
 }
 
-const Tag: VFC<Props> = ({ tag }) => {
+const Task: VFC<Props> = ({ task }) => {
+  const { data } = useQueryTask(task)
   const router = useRouter()
-  if (router.isFallback || !tag) {
+  if (router.isFallback || !task) {
     return <div>Loading...</div>
   }
   return (
-    <Layout title={tag.name}>
+    <Layout title={data.title}>
       <Stack spacing="5" align="center">
-        <Heading>{tag.name}</Heading>
-        <Link href={'/tags'} passHref>
+        <Heading>{data.title}</Heading>
+        <Link href={'/tasks'} passHref>
           <Button size="sm" bg="blue.500" _hover={{ bg: 'blue.400' }}>
             Back to Tags Page
           </Button>
@@ -31,10 +33,10 @@ const Tag: VFC<Props> = ({ tag }) => {
   )
 }
 
-export default Tag
+export default Task
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getTagIds()
+  const paths = await getTaskIds()
 
   return {
     paths,
@@ -42,10 +44,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const tag = await getTag(params.id)
+  const task = await getTask(params.id)
   return {
     props: {
-      tag,
+      task,
     },
     revalidate: 3,
   }
