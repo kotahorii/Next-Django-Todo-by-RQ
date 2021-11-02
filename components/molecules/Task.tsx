@@ -1,5 +1,11 @@
+import { ListItem } from '@chakra-ui/layout'
 import { VFC } from 'react'
+import { ReadTask } from '../../types/tasks/taskTypes'
 
-export const Task: VFC = () => {
-  return <div>task</div>
+type Props = {
+  task: ReadTask
+}
+
+export const Task: VFC<Props> = ({ task }) => {
+  return <ListItem>{task.title}</ListItem>
 }

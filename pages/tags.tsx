@@ -12,7 +12,7 @@ const Tags: VFC = () => {
   return (
     <Layout title="tags">
       <OrderedList>
-        {data.map((tag) => (
+        {data?.map((tag) => (
           <Tag key={tag.id} tag={tag} />
         ))}
       </OrderedList>
