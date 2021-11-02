@@ -1,7 +1,7 @@
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { ChangeEvent, FormEvent, useCallback, useState } from 'react'
 import Cookie from 'universal-cookie'
+import { client } from '../../lib/fetch'
 import { Token } from '../../types/auth/authTypes'
 
 const cookie = new Cookie()
@@ -27,20 +27,24 @@ export const useAuth = () => {
 
   const login = async () => {
     try {
-      const res = await axios.post<Token>(
-        `${process.env.NEXT_PUBLIC_RESTAPI_URL}jwt/create/`,
-        { username: username, password: password },
-        {
-          headers: {
-            'Content-Type': 'application/json',
+      await client
+        .post(`auth/jwt/create/`, {
+          json: {
+            username: username,
+            password: password,
           },
-        }
-      )
-      if (res.status === 200) {
-        const options = { path: '/' }
-        cookie.set('access_token', res.data.access, options)
-        router.push('/tasks')
-      }
+        })
+        .then((res): Promise<Token> => {
+          if (res.status === 400) {
+          } else if (res.ok) {
+            return res.json()
+          }
+        })
+        .then((data) => {
+          const options = { path: '/' }
+          cookie.set('access_token', data.access, options)
+        })
+      router.push('/tasks')
     } catch (err) {
       alert(err.message)
     }
@@ -56,16 +60,16 @@ export const useAuth = () => {
       } else {
         try {
           setIsLoading(true)
-          const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_RESTAPI_URL}register/`,
-            { username: username, password: password },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
-          )
-          if (res.status === 201) login()
+          await client
+            .post(`${process.env.NEXT_PUBLIC_RESTAPI_URL}register/`, {
+              json: { username: username, password: password },
+            })
+            .then((res) => {
+              if (res.status === 400) {
+                throw 'authentication failed'
+              }
+            })
+          login()
         } catch (err) {
           alert(err.message)
         } finally {
