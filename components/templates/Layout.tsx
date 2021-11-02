@@ -15,11 +15,11 @@ const cookie = new Cookie()
 
 export const Layout: VFC<Props> = ({ title, children }) => {
   const router = useRouter()
-  // useEffect(() => {
-  //   if (!cookie.get('access_token')) {
-  //     router.push('/')
-  //   }
-  // }, [cookie.get('access_token')])
+  useEffect(() => {
+    if (!cookie.get('access_token')) {
+      router.push('/')
+    }
+  }, [cookie.get('access_token')])
   return (
     <Flex
       direction="column"

@@ -10,7 +10,6 @@ export const useAuth = () => {
   const [isLogin, setIsLogin] = useState(true)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const handleUsername = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -54,14 +53,11 @@ export const useAuth = () => {
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       if (isLogin) {
-        setIsLoading(true)
         login()
-        setIsLoading(false)
       } else {
         try {
-          setIsLoading(true)
           await client
-            .post(`${process.env.NEXT_PUBLIC_RESTAPI_URL}register/`, {
+            .post(`register/`, {
               json: { username: username, password: password },
             })
             .then((res) => {
@@ -73,7 +69,6 @@ export const useAuth = () => {
         } catch (err) {
           alert(err.message)
         } finally {
-          setIsLoading(false)
         }
       }
     },
@@ -81,6 +76,7 @@ export const useAuth = () => {
   )
   const logout = () => {
     cookie.remove('access_token')
+    router.push('/')
   }
 
   return {
@@ -90,7 +86,6 @@ export const useAuth = () => {
     handleUsername,
     handlePassword,
     toggleIsLogin,
-    isLoading,
     authUser,
     logout,
   }
