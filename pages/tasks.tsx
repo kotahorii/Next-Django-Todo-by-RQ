@@ -8,3 +8,7 @@ const Tasks = () => {
 }
 
 export default Tasks
+
+export const getStaticProps = async () => {
+  const tasks = 
+}

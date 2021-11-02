@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { ChangeEvent, FormEvent, useCallback, useState } from 'react'
 import Cookie from 'universal-cookie'
-import { client } from '../../lib/fetch'
+import { client } from '../../lib/templateUrl'
 import { Token } from '../../types/auth/authTypes'
 
 const cookie = new Cookie()
@@ -27,7 +27,7 @@ export const useAuth = () => {
   const login = async () => {
     try {
       await client
-        .post(`auth/jwt/create/`, {
+        .post('auth/jwt/create/', {
           json: {
             username: username,
             password: password,
@@ -35,6 +35,7 @@ export const useAuth = () => {
         })
         .then((res): Promise<Token> => {
           if (res.status === 400) {
+            throw 'authentication failed'
           } else if (res.ok) {
             return res.json()
           }
