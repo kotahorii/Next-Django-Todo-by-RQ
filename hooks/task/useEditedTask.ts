@@ -20,10 +20,9 @@ export const useEditedTask = () => {
   const resetInput = () => {
     dispatch(resetEditedTask())
   }
-  const handleSelectTag = (e: ChangeEvent<{ value: unknown }>) => {
-    const value = e.target.value as string
-    const name = e.target.value as number
-    dispatch(setEditedTask({ ...editedTask, [name]: value }))
+  const handleSelectTag = (e: ChangeEvent<{ value: string }>) => {
+    const value = e.target.value
+    dispatch(setEditedTask({ ...editedTask, tag: value }))
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

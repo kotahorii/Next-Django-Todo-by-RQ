@@ -14,15 +14,14 @@ type Props = {
 }
 
 const Task: VFC<Props> = ({ task }) => {
-  const { data } = useQueryTask(task)
   const router = useRouter()
   if (router.isFallback || !task) {
     return <div>Loading...</div>
   }
   return (
-    <Layout title={data.title}>
+    <Layout title={task.title}>
       <Stack spacing="3" align="center">
-        <Heading>{data.title}</Heading>
+        <Heading>{task.title}</Heading>
         <Text>{task.username}</Text>
         <Text>{task.tag_name}</Text>
         <Text>{task.content}</Text>

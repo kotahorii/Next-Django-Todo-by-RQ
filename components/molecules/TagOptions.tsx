@@ -9,7 +9,6 @@ export const TagOptions: VFC = () => {
   const { handleSelectTag, editedTask } = useEditedTask()
   return (
     <Select
-      name="tag"
       value={editedTask.tag}
       onChange={handleSelectTag}
       color="gray.500"

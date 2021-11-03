@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 import Cookie from 'universal-cookie'
+import { useAppDispatch } from '../../app/hooks'
+import { resetEditedTask } from '../../features/tasks/taskSlice'
 import { apiUrl, client } from '../../lib/templateUrl'
 import { PostTask, ReadTask } from '../../types/tasks/taskTypes'
 
@@ -8,6 +10,7 @@ const cookie = new Cookie()
 
 export const useAppMutation = () => {
   const queryClient = useQueryClient()
+  const dispatch = useAppDispatch()
 
   const createTaskMutation = useMutation(
     (task: Omit<PostTask, 'id'>) =>
@@ -23,6 +26,7 @@ export const useAppMutation = () => {
         if (previousTasks) {
           queryClient.setQueryData('tasks', [...previousTasks, res.data])
         }
+        dispatch(resetEditedTask())
       },
     }
   )
@@ -46,6 +50,7 @@ export const useAppMutation = () => {
             )
           )
         }
+        dispatch(resetEditedTask())
       },
     }
   )
@@ -66,6 +71,7 @@ export const useAppMutation = () => {
             previousTasks.filter((task) => task.id !== variables)
           )
         }
+        dispatch(resetEditedTask())
       },
     }
   )
