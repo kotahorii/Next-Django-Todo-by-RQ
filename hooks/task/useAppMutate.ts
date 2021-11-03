@@ -1,6 +1,7 @@
+import axios from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 import Cookie from 'universal-cookie'
-import { client } from '../../lib/templateUrl'
+import { apiUrl, client } from '../../lib/templateUrl'
 import { PostTask, ReadTask } from '../../types/tasks/taskTypes'
 
 const cookie = new Cookie()
@@ -10,22 +11,17 @@ export const useAppMutation = () => {
 
   const createTaskMutation = useMutation(
     (task: Omit<PostTask, 'id'>) =>
-      client.delete(`tasks/`, {
-        json: {
-          task,
-        },
+      axios.post<ReadTask>(`${apiUrl}/tasks/`, task, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `JWT ${cookie.get('access_token')}`,
         },
       }),
     {
-      onSuccess: (res: any, variables) => {
+      onSuccess: (res) => {
         const previousTasks = queryClient.getQueryData<ReadTask[]>('tasks')
         if (previousTasks) {
-          queryClient.setQueryData('tasks', [
-            ...previousTasks,
-            res.json() as ReadTask,
-          ])
+          queryClient.setQueryData('tasks', [...previousTasks, res.data])
         }
       },
     }
@@ -33,22 +29,20 @@ export const useAppMutation = () => {
 
   const updateTaskMutation = useMutation(
     (task: PostTask) =>
-      client.delete(`tasks/${task.id}/`, {
-        json: {
-          task,
-        },
+      axios.put<ReadTask>(`${apiUrl}/tasks/${task.id}/`, task, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `JWT ${cookie.get('access_token')}`,
         },
       }),
     {
-      onSuccess: (res: any, variables) => {
+      onSuccess: (res, variables) => {
         const previousTasks = queryClient.getQueryData<ReadTask[]>('tasks')
         if (previousTasks) {
           queryClient.setQueryData<ReadTask[]>(
             'tasks',
             previousTasks.map((task) =>
-              task.id === variables.id ? (res.json() as ReadTask) : task
+              task.id === variables.id ? res.data : task
             )
           )
         }

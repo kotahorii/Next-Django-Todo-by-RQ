@@ -1,30 +1,16 @@
 import { Input } from '@chakra-ui/input'
 import { Stack } from '@chakra-ui/layout'
-import { Textarea } from '@chakra-ui/textarea'
 import { FormEvent, VFC } from 'react'
 import { TagOptions } from '../molecules/TagOptions'
-import { Heading } from '@chakra-ui/layout'
 import { useEditedTask } from '../../hooks/task/useEditedTask'
 import { Button } from '@chakra-ui/button'
 import { useAppMutation } from '../../hooks/task/useAppMutate'
 
 export const TaskForm: VFC = () => {
-  const { updateTaskMutation, createTaskMutation } = useAppMutation()
-  const { resetInput, handleInputChange, editedTask } = useEditedTask()
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    if (editedTask.id) {
-      updateTaskMutation.mutate(editedTask)
-    } else {
-      createTaskMutation.mutate({
-        title: editedTask.title,
-        content: editedTask.content,
-        tag: editedTask.tag,
-      })
-      resetInput()
-    }
-  }
+  const { handleInputChange, editedTask, handleSubmit, updateTaskMutation } =
+    useEditedTask()
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <Stack
         align="center"
         bg="gray.700"
@@ -40,6 +26,7 @@ export const TaskForm: VFC = () => {
           bg="blue.500"
           _hover={{ bg: 'blue.400' }}
           fontSize="xl"
+          isLoading={updateTaskMutation.isLoading}
         >
           {editedTask.id ? 'Update' : 'Create'}
         </Button>

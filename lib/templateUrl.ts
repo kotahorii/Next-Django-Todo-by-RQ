@@ -8,3 +8,4 @@ export const client = ky.create({
   timeout: 5000,
 })
 
+export const apiUrl = process.env.NEXT_PUBLIC_RESTAPI_URL

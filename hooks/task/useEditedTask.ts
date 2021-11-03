@@ -1,12 +1,14 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, FormEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   resetEditedTask,
   selectEditedBook,
   setEditedTask,
 } from '../../features/tasks/taskSlice'
+import { useAppMutation } from './useAppMutate'
 
 export const useEditedTask = () => {
+  const { updateTaskMutation, createTaskMutation } = useAppMutation()
   const dispatch = useAppDispatch()
   const editedTask = useAppSelector(selectEditedBook)
 
@@ -23,11 +25,27 @@ export const useEditedTask = () => {
     const name = e.target.value as number
     dispatch(setEditedTask({ ...editedTask, [name]: value }))
   }
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    if (editedTask.id) {
+      updateTaskMutation.mutate(editedTask)
+    } else {
+      createTaskMutation.mutate({
+        title: editedTask.title,
+        content: editedTask.content,
+        tag: editedTask.tag,
+      })
+      resetInput()
+    }
+  }
   return {
     handleInputChange,
     handleSelectTag,
     resetInput,
     editedTask,
-    dispatch
+    dispatch,
+    handleSubmit,
+    updateTaskMutation,
+    createTaskMutation,
   }
 }
