@@ -1,20 +1,17 @@
-import { ReadTag } from '../../types/tasks/tagTypes'
 import { Select } from '@chakra-ui/select'
 import { VFC } from 'react'
-import { useQuery } from 'react-query'
 import styles from '../../styles/TagOption.module.css'
-import { getTags } from '../../lib/tag'
 import { useQueryTags } from '../../hooks/task/useQueryTags'
-import { useRecoilValue } from 'recoil'
-import { editedTaskState } from '../../hooks/task/useEditedTask'
+import { useEditedTask } from '../../hooks/task/useEditedTask'
 
 export const TagOptions: VFC = () => {
   const { data: tags } = useQueryTags()
-  const editedTask = useRecoilValue(editedTaskState)
+  const { handleSelectTag, editedTask } = useEditedTask()
   return (
     <Select
       name="tag"
       value={editedTask.tag}
+      onChange={handleSelectTag}
       color="gray.500"
       placeholder="Tag"
     >

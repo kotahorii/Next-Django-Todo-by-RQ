@@ -3,7 +3,8 @@ import { AppProps } from 'next/app'
 import { useState } from 'react'
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import { RecoilRoot } from 'recoil'
+import { Provider } from 'react-redux'
+import { store } from '../app/store'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -21,11 +22,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
-        <RecoilRoot>
+        <Provider store={store}>
           <Hydrate state={pageProps.dehydratedState}>
             <Component {...pageProps} />
           </Hydrate>
-        </RecoilRoot>
+        </Provider>
       </ChakraProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>

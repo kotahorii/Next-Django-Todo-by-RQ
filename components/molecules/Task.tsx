@@ -8,8 +8,8 @@ import Link from 'next/link'
 import { Button } from '@chakra-ui/button'
 import { Input } from '@chakra-ui/input'
 import { useAppMutation } from '../../hooks/task/useAppMutate'
-import { useSetRecoilState } from 'recoil'
-import { editedTaskState } from '../../hooks/task/useEditedTask'
+import { useAppDispatch } from '../../app/hooks'
+import { setEditedTask } from '../../features/tasks/taskSlice'
 
 type Props = {
   task: ReadTask
@@ -17,7 +17,7 @@ type Props = {
 
 export const Task: VFC<Props> = ({ task }) => {
   const { deleteTaskMutation } = useAppMutation()
-  const setEditedTask = useSetRecoilState(editedTaskState)
+  const dispatch = useAppDispatch()
   return (
     <ListItem>
       <Stack align="center" direction="row" spacing="3">
@@ -39,12 +39,14 @@ export const Task: VFC<Props> = ({ task }) => {
           as={FiEdit}
           fontSize="xl"
           onClick={() =>
-            setEditedTask({
-              id: task.id,
-              title: task.title,
-              content: task.content,
-              tag: task.tag,
-            })
+            dispatch(
+              setEditedTask({
+                id: task.id,
+                title: task.title,
+                content: task.content,
+                tag: task.tag,
+              })
+            )
           }
           cursor="pointer"
         />

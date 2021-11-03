@@ -9,7 +9,7 @@ export const useAppMutation = () => {
   const queryClient = useQueryClient()
 
   const createTaskMutation = useMutation(
-    (task: PostTask) =>
+    (task: Omit<PostTask, 'id'>) =>
       client.delete(`tasks/`, {
         json: {
           task,
