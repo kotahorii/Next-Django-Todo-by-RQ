@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@chakra-ui/layout'
+import { Heading, Stack, Text } from '@chakra-ui/layout'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import React, { VFC } from 'react'
@@ -21,8 +21,11 @@ const Task: VFC<Props> = ({ task }) => {
   }
   return (
     <Layout title={data.title}>
-      <Stack spacing="5" align="center">
+      <Stack spacing="3" align="center">
         <Heading>{data.title}</Heading>
+        <Text>{task.username}</Text>
+        <Text>{task.tag_name}</Text>
+        <Text>{task.content}</Text>
         <Link href={'/tasks'} passHref>
           <Button size="sm" bg="blue.500" _hover={{ bg: 'blue.400' }}>
             Back to Tags Page

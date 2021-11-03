@@ -1,17 +1,23 @@
 import Icon from '@chakra-ui/icon'
-import { ListItem, Stack, Text } from '@chakra-ui/layout'
+import { Flex, ListItem, Stack, Text } from '@chakra-ui/layout'
 import { VFC } from 'react'
 import { ReadTask } from '../../types/tasks/taskTypes'
 import { MdDeleteOutline } from 'react-icons/md'
 import { FiEdit } from 'react-icons/fi'
 import Link from 'next/link'
 import { Button } from '@chakra-ui/button'
+import { Input } from '@chakra-ui/input'
+import { useAppMutation } from '../../hooks/task/useAppMutate'
+import { useSetRecoilState } from 'recoil'
+import { editedTaskState } from '../../hooks/task/useEditedTask'
 
 type Props = {
   task: ReadTask
 }
 
 export const Task: VFC<Props> = ({ task }) => {
+  const { deleteTaskMutation } = useAppMutation()
+  const setEditedTask = useSetRecoilState(editedTaskState)
   return (
     <ListItem>
       <Stack align="center" direction="row" spacing="3">
@@ -20,9 +26,30 @@ export const Task: VFC<Props> = ({ task }) => {
             {task.title}
           </Button>
         </Link>
-        <Icon as={MdDeleteOutline} fontSize="xl" />
-        <Icon as={FiEdit} fontSize="xl" />
+
+        <Icon
+          as={MdDeleteOutline}
+          fontSize="xl"
+          onClick={() => {
+            deleteTaskMutation.mutate(task.id)
+          }}
+          cursor="pointer"
+        />
+        <Icon
+          as={FiEdit}
+          fontSize="xl"
+          onClick={() =>
+            setEditedTask({
+              id: task.id,
+              title: task.title,
+              content: task.content,
+              tag: task.tag,
+            })
+          }
+          cursor="pointer"
+        />
       </Stack>
+      <Stack></Stack>
     </ListItem>
   )
 }
